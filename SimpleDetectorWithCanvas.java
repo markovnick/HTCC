@@ -231,7 +231,6 @@ public class SimpleDetectorWithCanvas extends JFrame implements IDetectorListene
                 for (int bin = 0; bin < hp.getxAxis().getNBins(); bin++) {
                     if (bin > 130 && bin < 140) {
                         signal = signal + hp.getBinContent(bin);
-                 //       System.out.println("signal : " + signal);
                     }
                     if (bin > 30 && bin < 40) {
                         pedestal = pedestal + hp.getBinContent(bin);
