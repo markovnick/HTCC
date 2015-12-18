@@ -89,10 +89,10 @@ public class SimpleDetectorWithCanvas extends JFrame implements IDetectorListene
                                     200, 0.0, 200.0));
                     adcH.add(sector, halfSector, ring,
                             new H1D(DetectorDescriptor.getName("ADC ", sector, halfSector, ring),
-                                    500, 0.0, 500.0));
+                                    500, 0.0, 10000.0));
                     pedH.add(sector, halfSector, ring,
                             new H1D(DetectorDescriptor.getName("Pedestal", sector, halfSector, ring),
-                                    500, 0.0, 500.0));
+                                    500, 0.0, 10000.0));
 
                     HV.add(sector, halfSector, ring,
                             new H1D(DetectorDescriptor.getName("HV", sector, halfSector, ring),
@@ -226,16 +226,21 @@ public class SimpleDetectorWithCanvas extends JFrame implements IDetectorListene
                 int sector = cnt.getDescriptor().getSector();
                 int ring = cnt.getDescriptor().getLayer();
                 int halfSector = cnt.getDescriptor().getComponent();
+                double signal = 0;
+                double pedestal = 0;
                 for (int bin = 0; bin < hp.getxAxis().getNBins(); bin++) {
-                    if (bin > 120 && bin < 140) {
-                        adcH.get(sector, halfSector, ring).fill(hp.getBinContent(bin));
+                    if (bin > 130 && bin < 140) {
+                        signal = signal + hp.getBinContent(bin);
+                 //       System.out.println("signal : " + signal);
                     }
-                    if (bin > 20 && bin < 40) {
-                        pedH.get(sector, halfSector, ring).fill(hp.getBinContent(bin));
+                    if (bin > 30 && bin < 40) {
+                        pedestal = pedestal + hp.getBinContent(bin);
                     }
                     tdcH.get(sector, halfSector, ring).fill(bin, hp.getBinContent(bin));
-
                 }
+                adcH.get(sector, halfSector, ring).fill(signal);
+                pedH.get(sector, halfSector, ring).fill(pedestal);
+
             }
         }
 
